@@ -3,4 +3,4 @@ App de criação de tarefas com funções de edição, exclusão, pesquisa e fil
 
 Feito usando HTML, CSS, Query Selectors, Funções e Event listeners do javascript
 
-Se voê quiser saber como ficou o projeto, acesse: [Site do projeto](https://assis-s-m.github.io/Todo-app/)
+Se você quiser saber como ficou o projeto, acesse: [Site do projeto](https://assis-s-m.github.io/Todo-app/)
