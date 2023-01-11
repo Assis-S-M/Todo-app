@@ -31,7 +31,7 @@ let inSearch = false
 const saveTodo = (text) => {
 
     // Mapeia o array inicial e cria um novo somente com o id dos objetos, deixanod a pesquisa mais eficiente e anti-falhas
-    if (todos.map(e => e.id).indexOf(`todo-${text.trim().replace(/\s/g, '-')}`) == -1) {
+    if ((text.trim() != '') && todos.map(e => e.id).indexOf(`todo-${text.trim().replace(/\s/g, '-')}`) == -1) {
         todos.push({
             id: `todo-${text.trim().replace(/\s/g, '-')}`,
             nome: text.trim(),
@@ -41,7 +41,7 @@ const saveTodo = (text) => {
         
         addToLocalStorage(todos)
     } else {
-        alert('Essa tarefa já existe!')
+        alert('Nome de tarefa invalido ou tarefa já existe!')
     }
 
     todoInput.value = ""
@@ -212,7 +212,7 @@ editForm.addEventListener('submit', (e) => {
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    if (e.submitter.id == 'searchButton') {
+    if ((searchInput.trim() != '') && e.submitter.id == 'searchButton') {
         inSearch = true
         searchTodos(searchInput.value)
 
