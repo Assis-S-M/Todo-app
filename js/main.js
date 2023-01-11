@@ -170,7 +170,7 @@ const renderPage = () => {
     
     if (todos.length > 5) {
       paginas.removeAttribute('style')
-    } else {
+    } else if (todos.length <= 5 && paginaAtual == 0) {
       paginas.setAttribute('style', 'display: none;')
     }
     
@@ -204,7 +204,7 @@ editForm.addEventListener('submit', (e) => {
 
     if(e.submitter.id == 'cancelEditBtn') {
         toggleForms()
-    } else if (e.submitter.id == 'editConfirm') {
+    } else if (editInput.value && e.submitter.id == 'editConfirm') {
         editTodos(e.submitter.name, editInput.value)
     }
 })
