@@ -204,7 +204,7 @@ editForm.addEventListener('submit', (e) => {
 
     if(e.submitter.id == 'cancelEditBtn') {
         toggleForms()
-    } else if (editInput.value && e.submitter.id == 'editConfirm') {
+    } else if ((editInput.value.trim() != '') && e.submitter.id == 'editConfirm') {
         editTodos(e.submitter.name, editInput.value)
     }
 })
