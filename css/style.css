@@ -10,7 +10,7 @@
 
 body {
     background-color: rgb(71, 83, 102);
-} 
+}
 
 button {
     background-color: rgb(252, 252, 252);
@@ -159,4 +159,14 @@ input, select {
     color: rgb(255, 255, 255);
     text-decoration: line-through;
     font-style: italic;
+}
+
+div#paginas {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+div#paginas button {
+    margin-right: .5rem;
 }
