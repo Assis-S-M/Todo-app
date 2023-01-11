@@ -24,6 +24,9 @@ let numeroPaginas = Math.floor(todos.length / 5)
 let minIndex = (5 * paginaAtual)
 let maxIndex = (minIndex + 4)
 
+//Variável de pesquisa
+let inSearch = false
+
 // Funções
 const saveTodo = (text) => {
 
@@ -44,20 +47,18 @@ const saveTodo = (text) => {
     todoInput.value = ""
     todoInput.focus()
 
-    renderTodos(todos)
     renderPage()
+    renderTodos(todos)
 }
 
 // Atualiza as listas de tarefas
 const renderTodos = () => {
     todoList.innerHTML = ''
 
-    renderPage()
-
     // Loop forEach com sistema de paginação ~Limitar id's que irão aparecer na lista~
     todos.forEach((item) => {
 
-        if (todos.indexOf(item) >= minIndex && todos.indexOf(item) <= maxIndex) {
+        if (inSearch || todos.indexOf(item) >= minIndex && todos.indexOf(item) <= maxIndex) {
 
             const todo = document.createElement('div')
             todo.classList.add('todo')
@@ -91,28 +92,6 @@ const renderTodos = () => {
             todoList.append(todo)
         }
     })
-
-    // Pequena condicional para ativar e desativar os botões das paginas
-    if (numeroPaginas > 0 && todos.length > 5 && paginas.innerHTML == '') {
-        const pageDown = document.createElement('button')
-        pageDown.setAttribute('class', 'pageDown')
-
-        const pageUp = document.createElement('button')
-        pageUp.setAttribute('class', 'pageUp')
-
-        const iPageDown = document.createElement('i')
-        iPageDown.setAttribute('class', 'fa-solid fa-less-than')
-
-        const iPageUp = document.createElement('i')
-        iPageUp.setAttribute('class', 'fa-solid fa-greater-than')
-
-        pageDown.append(iPageDown)
-        pageUp.append(iPageUp)
-
-        paginas.append(pageDown, pageUp)
-    } else if (todos.length <= 5) {
-        paginas.innerHTML = ''
-    }
 }
 
 const editTodos = (oldText, newText) => {
@@ -122,13 +101,14 @@ const editTodos = (oldText, newText) => {
 
     // Loop forEach que faz um check de equalidade com o newText transformado em id até achar um item correspondente e altera-lo
     todos.forEach((item) => {
-        if (item.id == `todo-${oldText.replace(/\s/g, '-')}`) {
+        if (item.id == `todo-${oldText.trim().replace(/\s/g, '-')}`) {
             item.nome = newText.trim()
             item.id = `todo-${newText.trim().replace(/\s/g, '-')}`
         }
     })
 
     addToLocalStorage(todos)
+    renderPage()
     renderTodos(todos)
     toggleForms()
 }
@@ -137,7 +117,7 @@ const searchTodos = (search) => {
 
     // Loop forEach que faz um check de equalidade com a search transformada em id até achar um item correspondente e altera-lo
     todos.forEach((item) => {
-        if(search && item.id == `todo-${search.replace(/\s/g, '-')}`) {
+        if(search && item.id == `todo-${search.trim().replace(/\s/g, '-')}`) {
             item.display = true
         } else {
             item.display = false
@@ -145,6 +125,7 @@ const searchTodos = (search) => {
     })
 
     addToLocalStorage(todos)
+    renderPage()
     renderTodos(todos)
 }
 
@@ -172,6 +153,7 @@ const filterTodos = (filter) => {
     })
 
     addToLocalStorage(todos)
+    renderPage()
     renderTodos(todos)
 }
 
@@ -185,6 +167,14 @@ const renderPage = () => {
     numeroPaginas = Math.floor(todos.length / 5)
     minIndex = (5 * paginaAtual)
     maxIndex = (minIndex + 4)
+    
+    if (todos.length > 5) {
+      paginas.removeAttribute('style')
+    } else {
+      paginas.setAttribute('style', 'display: none;')
+    }
+    
+    console.log(paginaAtual, numeroPaginas, minIndex, maxIndex)
 }
 
 // Função que transforma o array das tarefas em String e envia para o armazenamento interno do dispositivo
@@ -197,7 +187,6 @@ const addToLocalStorage = (todos) => {
 const getFromLocalStorage = () => {
     if (localStorage.getItem('todos')) {
         todos = JSON.parse(localStorage.getItem('todos'))
-        renderTodos(todos)
     }
 }
 
@@ -224,6 +213,7 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
     if (e.submitter.id == 'searchButton') {
+        inSearch = true
         searchTodos(searchInput.value)
 
     } else if (e.submitter.id == 'eraseButton') {
@@ -233,8 +223,10 @@ searchForm.addEventListener('submit', (e) => {
         })
 
         searchInput.value = ''
+        inSearch = false
 
         addToLocalStorage(todos)
+        renderPage()
         renderTodos(todos)
     }
 })
@@ -257,6 +249,7 @@ document.addEventListener('click', (e) => {
         })
 
         addToLocalStorage(todos)
+        renderPage()
         renderTodos(todos)
     }
 
@@ -277,23 +270,25 @@ document.addEventListener('click', (e) => {
         })
 
         addToLocalStorage(todos)
-        renderTodos(todos)
         renderPage()
+        renderTodos(todos)
     }
 
     if (e.target.classList.contains('pageDown') && paginaAtual > 0) {
         paginaAtual--
     
-        renderTodos(todos)
         renderPage()
+        renderTodos(todos)
     }
 
     if (e.target.classList.contains('pageUp') && paginaAtual < numeroPaginas) {
         paginaAtual++
 
-        renderTodos(todos)
         renderPage()
+        renderTodos(todos)
     }
 })
 
 getFromLocalStorage()
+renderPage()
+renderTodos(todos)
