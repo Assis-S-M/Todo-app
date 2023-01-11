@@ -28,10 +28,10 @@ let maxIndex = (minIndex + 4)
 const saveTodo = (text) => {
 
     // Mapeia o array inicial e cria um novo somente com o id dos objetos, deixanod a pesquisa mais eficiente e anti-falhas
-    if (todos.map(e => e.id).indexOf(`todo-${text.replace(/\s/g, '-')}`) == -1) {
+    if (todos.map(e => e.id).indexOf(`todo-${text.trim().replace(/\s/g, '-')}`) == -1) {
         todos.push({
-            id: `todo-${text.replace(/\s/g, '-')}`,
-            nome: text,
+            id: `todo-${text.trim().replace(/\s/g, '-')}`,
+            nome: text.trim(),
             done: false,
             display: true
         })
@@ -123,8 +123,8 @@ const editTodos = (oldText, newText) => {
     // Loop forEach que faz um check de equalidade com o newText transformado em id até achar um item correspondente e altera-lo
     todos.forEach((item) => {
         if (item.id == `todo-${oldText.replace(/\s/g, '-')}`) {
-            item.nome = newText
-            item.id = `todo-${newText.replace(/\s/g, '-')}`
+            item.nome = newText.trim()
+            item.id = `todo-${newText.trim().replace(/\s/g, '-')}`
         }
     })
 
