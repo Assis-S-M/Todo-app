@@ -183,7 +183,7 @@ const searchTodos = (search) => {
 
     // Loop forEach que faz um check de equalidade com a search transformada em id até achar um item correspondente e altera-lo
     todos.forEach((item) => {
-        if(search && item.id == `todo-${search.replace(/\s/g, '-')}`) {
+        if(search && item.id == `todo-${search.trim().replace(/\s/g, '-')}`) {
             item.display = true
         } else {
             item.display = false
